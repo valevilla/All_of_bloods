@@ -1,271 +1,339 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OAB | Ecosistema Cultural</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OAB | Where Mixture Becomes Culture</title>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #b39659;
+            --black: #000000;
+            --white: #ffffff;
+            --gray: #f2f2f2;
+            --transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+        }
 
-<style>
-:root{
-  --black:#0a0a0a;
-  --white:#ffffff;
-  --gray:#f5f5f5;
-  --border:1px solid #e5e5e5;
-  --shadow:0 15px 40px rgba(0,0,0,0.08);
-  --font-main:'Inter', sans-serif;
-  --font-serif:'Playfair Display', serif;
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--black); overflow-x: hidden; }
 
-/* GLOBAL */
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:var(--font-main);background:#fff;color:#000;padding-top:80px;scroll-behavior:smooth;}
-a{text-decoration:none;color:inherit;}
-.btn{padding:10px 18px;border:1px solid #000;background:#000;color:#fff;font-size:.75rem;cursor:pointer;transition:.3s;}
-.btn:hover{background:#fff;color:#000;}
+        /* HEADER & NAVIGATION */
+        header {
+            position: fixed; top: 0; width: 100%; height: 80px;
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; z-index: 1000; border-bottom: 1px solid #eee;
+        }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; }
+        nav ul { display: flex; gap: 30px; list-style: none; }
+        nav a { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; color: var(--black); font-weight: 600; }
+        .nav-tools { display: flex; gap: 20px; align-items: center; }
+        .cart-icon { position: relative; cursor: pointer; font-size: 1.2rem; }
+        .cart-count { position: absolute; -10px; right: -10px; background: var(--gold); color: white; font-size: 0.6rem; padding: 2px 5px; border-radius: 50%; }
 
-/* NAVBAR */
-header{
-  position:fixed;top:0;width:100%;height:80px;
-  background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);
-  border-bottom:var(--border);display:flex;justify-content:space-between;align-items:center;padding:0 8%;z-index:1000;
-}
-.logo{font-weight:800;font-size:1.5rem;letter-spacing:-1px}
-nav ul{display:flex;gap:30px;list-style:none}
-nav a{text-decoration:none;color:#000;font-size:.75rem;font-weight:600;text-transform:uppercase}
+        /* HERO WITH ZOOM */
+        .hero {
+            height: 100vh; position: relative; display: flex; align-items: center; justify-content: center;
+            overflow: hidden; color: white; text-align: center;
+        }
+        .hero-img {
+            position: absolute; inset: 0;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('portada.jpg'), url('portada.jpg');
+            background-size: cover; background-position: center;
+            animation: heroZoom 20s infinite alternate; z-index: -1;
+        }
+        @keyframes heroZoom { from { transform: scale(1); } to { transform: scale(1.2); } }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-style: italic; }
 
-/* HERO */
-.hero{
-  height:100vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;overflow:hidden;
-}
-.hero::before{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1508138221679-760a23a2285b?auto=format&fit=crop&w=1920&q=80') center/cover;
-  animation:zoom 20s infinite alternate;z-index:-1;
-}
-@keyframes zoom{from{transform:scale(1)} to{transform:scale(1.15)}}
-.hero h1{font-size:clamp(3rem,8vw,6rem);font-weight:800;letter-spacing:-3px;}
-.hero p{margin-top:20px;max-width:600px;font-size:1.2rem;}
+        /* FILTROS DE EVENTOS */
+        .filter-container { display: flex; justify-content: center; gap: 15px; margin-bottom: 50px; }
+        .filter-btn { padding: 10px 25px; border: 1px solid var(--black); background: none; cursor: pointer; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; transition: var(--transition); }
+        .filter-btn.active, .filter-btn:hover { background: var(--black); color: var(--white); }
 
-/* MÉTRICAS */
-.metrics{display:flex;justify-content:space-around;align-items:center;background:#111;color:#fff;padding:60px 8%;text-align:center;gap:40px;flex-wrap:wrap;}
-.metric{flex:1;min-width:180px;}
-.metric i{font-size:2.5rem;margin-bottom:10px;color:#fff;}
-.metric h2{font-size:2.5rem;margin-bottom:5px;}
-.metric p{font-size:1rem;text-transform:uppercase;letter-spacing:1px;}
+        /* MARKETPLACE B&W TO COLOR */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 40px; padding: 0 5%; }
+        .product-card { cursor: pointer; transition: var(--transition); }
+        .img-container { position: relative; overflow: hidden; height: 450px; background: #eee; }
+        .product-card img { 
+            width: 100%; height: 100%; object-fit: cover; 
+            filter: grayscale(100%); transition: filter 0.6s ease, transform 0.6s ease;
+        }
+        .product-card:hover img { filter: grayscale(0%); transform: scale(1.05); }
+        .product-info { padding: 20px 0; }
+        .product-info h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 5px; }
+        .product-info p { color: var(--gold); font-weight: 600; }
 
-/* SECCIONES */
-section{padding:100px 8%;border-bottom:var(--border);}
-.section-title{font-family:var(--font-serif);font-size:2.5rem;text-align:center;margin-bottom:60px;font-style:italic;}
+        /* PORTAL & PERFIL */
+        .portal-section { background: var(--gray); padding: 100px 10%; }
+        .portal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+        .auth-box { background: white; padding: 40px; border-radius: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .role-selector { display: flex; gap: 10px; margin-bottom: 20px; }
+        .role-tab { flex: 1; padding: 10px; text-align: center; border: 1px solid #ddd; cursor: pointer; font-size: 0.8rem; }
+        .role-tab.active { background: var(--black); color: white; border-color: var(--black); }
 
-/* MARKETPLACE */
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px;}
-.card{border:var(--border);overflow:hidden;transition:.3s;}
-.card:hover{box-shadow:var(--shadow);transform:translateY(-5px);}
-.card img{width:100%;height:300px;object-fit:cover;filter:grayscale(100%);transition:.5s;}
-.card:hover img{filter:grayscale(0%);}
-.card-info{padding:20px;text-align:center;}
+        /* CONTACTO & REDES */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; padding: 100px 10%; }
+        .social-links { display: flex; gap: 20px; font-size: 1.5rem; margin-top: 30px; }
+        .social-links a { color: var(--black); transition: 0.3s; }
+        .social-links a:hover { color: var(--gold); transform: translateY(-5px); }
+        .mail-link { color: var(--gold); text-decoration: underline; font-weight: 600; }
 
-/* NOSOTROS */
-.about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:40px;text-align:center;}
-.about-box{padding:30px;border:var(--border);}
+        /* CARRITO MODAL */
+        #cart-modal {
+            position: fixed; right: -400px; top: 0; width: 400px; height: 100%;
+            background: white; z-index: 2000; box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            padding: 40px; transition: var(--transition); display: flex; flex-direction: column;
+        }
+        #cart-modal.open { right: 0; }
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .checkout-btn { background: var(--black); color: white; padding: 15px; width: 100%; border: none; margin-top: auto; cursor: pointer; }
 
-/* EVENTOS */
-.filter-btns{text-align:center;margin-bottom:40px;}
-.filter-btns button{margin:0 10px;padding:8px 16px;border:1px solid #000;background:#fff;cursor:pointer;}
-.filter-btns button.active{background:#000;color:#fff;}
-.event-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;}
-.event-card{border:var(--border);}
-.event-card img{width:100%;height:200px;object-fit:cover;}
+        /* JANI CHATBOT */
+        #jani-trigger {
+            position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px;
+            background: var(--black); color: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1500;
+        }
+        #jani-chat {
+            position: fixed; bottom: 100px; left: 30px; width: 320px; height: 450px;
+            background: white; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            display: none; flex-direction: column; overflow: hidden; z-index: 1500;
+        }
 
-/* TESTIMONIOS */
-.testimonial-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;}
-.testimonial{border:var(--border);padding:30px;text-align:center;transition:.3s;}
-.testimonial img{width:70px;height:70px;border-radius:50%;object-fit:cover;margin-bottom:15px;}
-.stars{color:gold;margin:10px 0;}
-
-/* CONTACTO */
-form input, form textarea{width:100%;padding:10px;border:1px solid #ddd;margin-bottom:15px;}
-.faq-item{border-bottom:var(--border);padding:20px 0;cursor:pointer;}
-.faq-answer{display:none;color:#666;margin-top:10px;}
-.faq-item.active .faq-answer{display:block;}
-
-/* CHATBOT */
-#chatbot{position:fixed;bottom:20px;right:20px;width:300px;height:400px;background:#fff;border:1px solid #ddd;border-radius:10px;display:flex;flex-direction:column;overflow:hidden;z-index:1000;box-shadow:var(--shadow);}
-#chat-header{background:#000;color:#fff;padding:10px;text-align:center;font-weight:600;cursor:pointer;}
-#chat-messages{flex:1;padding:10px;overflow-y:auto;}
-#chat-input{display:flex;border-top:1px solid #ddd;}
-#chat-input input{flex:1;padding:10px;border:none;}
-#chat-input button{padding:10px;border:none;background:#000;color:#fff;cursor:pointer;}
-</style>
+        /* FOOTER */
+        footer { background: var(--black); color: white; padding: 80px 5% 40px; text-align: center; }
+        .footer-logo { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 10px; }
+        .slogan { letter-spacing: 5px; text-transform: uppercase; font-size: 0.7rem; opacity: 0.7; margin-bottom: 40px; }
+        .footer-links { display: flex; justify-content: center; gap: 30px; font-size: 0.7rem; opacity: 0.5; }
+    </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">OAB.</div>
-  <nav>
-    <ul>
-      <li><a href="#shop">Marketplace</a></li>
-      <li><a href="#about">Nosotros</a></li>
-      <li><a href="#events">Eventos</a></li>
-      <li><a href="#contact">Contacto</a></li>
-    </ul>
-  </nav>
-  <button class="btn" onclick="window.open('login.html','_blank')">Iniciar</button>
+    <div class="logo">OAB.</div>
+    <nav>
+        <ul>
+            <li><a href="#marketplace">Marketplace</a></li>
+            <li><a href="#encuentros">Encuentros</a></li>
+            <li><a href="#portal">Portal</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+    </nav>
+    <div class="nav-tools">
+        <div class="cart-icon" onclick="toggleCart()">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span class="cart-count" id="cart-count">0</span>
+        </div>
+        <a href="#portal"><i class="fa-regular fa-user"></i></a>
+    </div>
 </header>
 
-<!-- HERO -->
 <section class="hero">
-  <div>
-    <h1>OF ALL BLOODS</h1>
-    <p>Lujo cultural con trazabilidad ética.</p>
-  </div>
+    <div class="hero-img"></div>
+    <div class="hero-content">
+        <h1>Of All Bloods</h1>
+        <p style="letter-spacing: 4px; text-transform: uppercase;">Herencia Peruana en Alta Fidelidad</p>
+    </div>
 </section>
 
-<!-- MÉTRICAS -->
-<section class="metrics">
-  <div class="metric"><i class="fas fa-user-tie"></i><h2 id="metric1">0</h2><p>Emprendedores</p></div>
-  <div class="metric"><i class="fas fa-box-open"></i><h2 id="metric2">0</h2><p>Productos</p></div>
-  <div class="metric"><i class="fas fa-calendar-alt"></i><h2 id="metric3">0</h2><p>Eventos</p></div>
-  <div class="metric"><i class="fas fa-globe"></i><h2 id="metric4">0</h2><p>Paises</p></div>
+<section id="marketplace" style="padding: 100px 0;">
+    <h2 style="text-align:center; font-family:'Playfair Display'; font-size: 2.5rem; margin-bottom: 50px;">Curaduría de Piezas</h2>
+    <div class="product-grid">
+        <div class="product-card" onclick="addToCart('Poncho de Alpaca Suri', 850)">
+            <div class="img-container"><img src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=800"></div>
+            <div class="product-info">
+                <h3>Poncho Alpaca Suri</h3>
+                <p>S/ 850.00</p>
+            </div>
+        </div>
+        <div class="product-card" onclick="addToCart('Bolso de Cuero Repujado', 420)">
+            <div class="img-container"><img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=800"></div>
+            <div class="product-info">
+                <h3>Bolso Cuero Repujado</h3>
+                <p>S/ 420.00</p>
+            </div>
+        </div>
+        <div class="product-card" onclick="addToCart('Manta de Lana Teñida', 600)">
+            <div class="img-container"><img src="https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?q=80&w=800"></div>
+            <div class="product-info">
+                <h3>Manta de Lana Teñida</h3>
+                <p>S/ 600.00</p>
+            </div>
+        </div>
+    </div>
 </section>
 
-<!-- MARKETPLACE -->
-<section id="shop">
-<h2 class="section-title">Marketplace</h2>
-<div class="grid" id="products"></div>
+<section id="encuentros" style="padding: 100px 10%; border-top: 1px solid #eee;">
+    <h2 style="text-align:center; font-family:'Playfair Display'; margin-bottom:40px;">Encuentros OAB</h2>
+    <div class="filter-container">
+        <button class="filter-btn active" onclick="filterEvents('next')">Próximos</button>
+        <button class="filter-btn" onclick="filterEvents('now')">En Proceso</button>
+        <button class="filter-btn" onclick="filterEvents('past')">Pasados</button>
+    </div>
+    <div id="events-list" style="display: grid; gap: 20px;">
+        </div>
 </section>
 
-<!-- NOSOTROS -->
-<section id="about">
-<h2 class="section-title">Nuestra Esencia</h2>
-<div class="about-grid">
-<div class="about-box"><h3>Misión</h3><p>Conectar artesanos latinoamericanos con el mercado global bajo comercio justo.</p></div>
-<div class="about-box"><h3>Visión</h3><p>Ser la plataforma cultural más influyente del hemisferio sur.</p></div>
-<div class="about-box"><h3>Valores</h3><p>Autenticidad, trazabilidad, sostenibilidad y orgullo identitario.</p></div>
-</div>
+<section id="portal" class="portal-section">
+    <div class="portal-grid">
+        <div>
+            <h2 style="font-family:'Playfair Display'; font-size: 3rem; margin-bottom: 20px;">Únete al <br>Ecosistema.</h2>
+            <p>Si eres artesano, expande tu legado al mundo. Si eres amante de la cultura, descubre tesoros únicos con trazabilidad garantizada.</p>
+        </div>
+        <div class="auth-box">
+            <div class="role-selector">
+                <div class="role-tab active" id="tab-buyer" onclick="setRole('comprador')">Comprador</div>
+                <div class="role-tab" id="tab-seller" onclick="setRole('emprendedor')">Emprendedor</div>
+            </div>
+            <form onsubmit="event.preventDefault(); alert('Registro exitoso. Bienvenido a OAB.');">
+                <input type="text" placeholder="Nombre de usuario" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd;">
+                <input type="email" placeholder="Correo electrónico" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd;">
+                <input type="password" placeholder="Contraseña segura (Min. 10 carac.)" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd;">
+                <button class="checkout-btn" style="border-radius: 0;">REGISTRAR MI PERFIL</button>
+            </form>
+        </div>
+    </div>
 </section>
 
-<!-- EVENTOS -->
-<section id="events">
-<h2 class="section-title">Eventos</h2>
-<div class="filter-btns">
-  <button onclick="filterEvents('all')" class="active">Todos</button>
-  <button onclick="filterEvents('proximo')">Próximos</button>
-  <button onclick="filterEvents('concluido')">Concluidos</button>
-</div>
-<div class="event-grid" id="eventsGrid"></div>
+<section id="contacto" class="contact-grid">
+    <div>
+        <h2 style="font-family:'Playfair Display'; margin-bottom: 20px;">Contáctanos</h2>
+        <p>¿Tienes dudas sobre una pieza o quieres colaborar? Escríbenos directamente.</p>
+        <p style="margin-top:20px;">Email: <a href="mailto:consultas@oab.global" class="mail-link">consultas@oab.global</a></p>
+        
+        <div class="social-links">
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+    </div>
+    <div>
+        <form>
+            <input type="text" placeholder="Tu mensaje..." style="width:100%; padding:20px; border:1px solid #ddd; height: 150px;">
+            <button class="checkout-btn" style="margin-top:20px;">ENVIAR CONSULTA</button>
+        </form>
+    </div>
 </section>
 
-<!-- TESTIMONIOS -->
-<section>
-<h2 class="section-title">Testimonios</h2>
-<div class="testimonial-grid">
-<div class="testimonial">
-<img src="https://randomuser.me/api/portraits/women/44.jpg">
-<h4>María Quispe</h4>
-<div class="stars">★★★★★</div>
-<p>"OAB transformó mi taller en una marca internacional, sin perder autenticidad."</p>
+<div id="cart-modal">
+    <h2 style="font-family:'Playfair Display'; margin-bottom:30px;">Tu Canasta</h2>
+    <div id="cart-items-list"></div>
+    <div style="margin-top: 20px; border-top: 2px solid #000; padding-top: 20px;">
+        <div style="display:flex; justify-content:space-between; font-weight:700;">
+            <span>TOTAL:</span>
+            <span id="cart-total">S/ 0.00</span>
+        </div>
+        <p style="font-size: 0.7rem; margin-top:10px; opacity:0.6;">Métodos de pago: Yape, Plin, Transferencias Bancarias.</p>
+        <button class="checkout-btn" onclick="alert('Redirigiendo a pasarela de pago segura...')">PAGAR AHORA</button>
+        <button onclick="toggleCart()" style="background:none; border:none; margin-top:10px; cursor:pointer; font-size:0.7rem;">CERRAR</button>
+    </div>
 </div>
-<div class="testimonial">
-<img src="https://randomuser.me/api/portraits/men/32.jpg">
-<h4>José Ramos</h4>
-<div class="stars">★★★★☆</div>
-<p>"Ahora vendo en Europa sin perder mi identidad cultural. Excelente plataforma."</p>
-</div>
-<div class="testimonial">
-<img src="https://randomuser.me/api/portraits/women/65.jpg">
-<h4>Ana Torres</h4>
-<div class="stars">★★★★★</div>
-<p>"Un ecosistema real de crecimiento para emprendedores con visión global."</p>
-</div>
-</div>
-</section>
 
-<!-CONTACTO + FAQ->
-<section id="contact">
-<h2 class="section-title">Contacto & Encuesta</h2>
-<form onsubmit="event.preventDefault(); showCoupon();">
-<input placeholder="Nombre" required>
-<input placeholder="Email" required>
-<textarea placeholder="¿Qué tipo de productos culturales te interesan?" required></textarea>
-<button class="btn">Enviar Encuesta</button>
-</form>
-<div id="coupon" style="display:none;margin-top:20px;font-weight:bold;">🎉 Cupón generado: RESEARCH10 (10% OFF)</div>
+<div id="jani-trigger" onclick="toggleJani()"><i class="fa-solid fa-dove"></i></div>
+<div id="jani-chat" id="janiChat">
+    <div style="background:black; color:white; padding:15px; display:flex; align-items:center; gap:10px;">
+        <i class="fa-solid fa-dove"></i> <strong>Jani</strong>
+    </div>
+    <div id="jani-body" style="flex:1; padding:15px; overflow-y:auto; font-size:0.85rem;">
+        <p style="background:#f0f0f0; padding:10px; border-radius:10px;">¡Hola! Soy Jani. ¿Buscas ayuda con tu compra o quieres saber cómo registrarte como emprendedor?</p>
+    </div>
+    <div style="padding:10px; border-top:1px solid #eee; display:flex;">
+        <input type="text" placeholder="Escribe a Jani..." style="flex:1; border:none; outline:none;">
+        <button style="background:none; border:none; color:var(--gold); font-weight:700;">VER</button>
+    </div>
+</div>
 
-<h3 style="margin-top:60px">Preguntas Frecuentes</h3>
-<div class="faq-item" onclick="toggleFAQ(this)">
-<strong>¿Cómo vendo en OAB?</strong>
-<div class="faq-answer">Debes registrarte como Emprendedor y completar tu perfil.</div>
-</div>
-<div class="faq-item" onclick="toggleFAQ(this)">
-<strong>¿Hacen envíos internacionales?</strong>
-<div class="faq-answer">Sí, enviamos a más de 5 países.</div>
-</div>
-</section>
-
-<!CHATBOT-->
-<div id="chatbot">
-<div id="chat-header" onclick="toggleChat()">Chat IA</div>
-<div id="chat-messages"></div>
-<div id="chat-input">
-<input type="text" id="chatText" placeholder="Escribe tu mensaje">
-<button onclick="sendChat()">Enviar</button>
-</div>
-</div>
+<footer>
+    <div class="footer-logo">OAB.</div>
+    <p class="slogan">Where mixture becomes culture</p>
+    <div class="footer-links">
+        <span>&copy; 2024 OF ALL BLOODS</span>
+        <a href="#" style="color:white;">Términos y Condiciones</a>
+        <a href="#" style="color:white;">Política de Trazabilidad</a>
+    </div>
+</footer>
 
 <script>
-/* MÉTRICAS ANIMADAS */
-function animateMetric(id, target){
-  let el=document.getElementById(id),count=0,step=Math.ceil(target/100);
-  let interval=setInterval(()=>{count+=step;if(count>=target){count=target;clearInterval(interval);} el.textContent=count;},20);
-}
-window.addEventListener('load', ()=>{
-  animateMetric('metric1', 120);
-  animateMetric('metric2', 350);
-  animateMetric('metric3', 25);
-  animateMetric('metric4', 8);
-});
+    // ESTADO DEL CARRITO
+    let cart = [];
+    function addToCart(name, price) {
+        cart.push({name, price});
+        updateCart();
+        if(!document.getElementById('cart-modal').classList.contains('open')) toggleCart();
+    }
 
-/* MARKETPLACE */
-const products=[
-{title:"Poncho Contemporáneo",price:350,img:"https://images.unsplash.com/photo-1520013577416-64b1f6424e6c?w=400"},
-{title:"Cerámica Negra",price:120,img:"https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=400"},
-{title:"Bolso Cuero Vegano",price:210,img:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400"}
-];
-document.getElementById("products").innerHTML=products.map(p=>`
-<div class="card"><img src="${p.img}"><div class="card-info"><h4>${p.title}</h4><p>S/ ${p.price}</p><button class="btn" style="width:100%">Añadir</button></div></div>`).join("");
+    function updateCart() {
+        const list = document.getElementById('cart-items-list');
+        const count = document.getElementById('cart-count');
+        const total = document.getElementById('cart-total');
+        
+        list.innerHTML = cart.map((item, index) => `
+            <div class="cart-item">
+                <span>${item.name}</span>
+                <strong>S/ ${item.price}</strong>
+            </div>
+        `).join('');
+        
+        count.innerText = cart.length;
+        const totalSum = cart.reduce((acc, item) => acc + item.price, 0);
+        total.innerText = `S/ ${totalSum.toFixed(2)}`;
+    }
 
-/* EVENTOS */
-const events=[
-{title:"Summit Lima",status:"proximo",img:"https://images.unsplash.com/photo-1531058020387-3be344556be6?w=600"},
-{title:"Workshop Exportación",status:"concluido",img:"https://images.unsplash.com/photo-1475721027785-f74dea327912?w=600"}
-];
-function renderEvents(filter){let filtered=filter==="all"?events:events.filter(e=>e.status===filter);document.getElementById("eventsGrid").innerHTML=filtered.map(e=>`<div class="event-card"><img src="${e.img}"><div style="padding:20px"><h4>${e.title}</h4><p>${e.status}</p></div></div>`).join("");}
-renderEvents("all");
-function filterEvents(type){document.querySelectorAll(".filter-btns button").forEach(b=>b.classList.remove("active"));event.target.classList.add("active");renderEvents(type);}
+    function toggleCart() {
+        document.getElementById('cart-modal').classList.toggle('open');
+    }
 
-/* FAQ */
-function toggleFAQ(el){el.classList.toggle("active");}
+    // FILTRO DE EVENTOS
+    const events = [
+        {title: "Cumbre de Diseño Ancestral", date: "Oct 2024", status: "next", desc: "Próxima feria en Lima."},
+        {title: "Workshop de Telar de Cintura", date: "En curso", status: "now", desc: "Sucediendo ahora en Cusco."},
+        {title: "Exposición Madrid Cultural", date: "Sept 2024", status: "past", desc: "Finalizado con éxito."}
+    ];
 
-/* CUPON */
-function showCoupon(){document.getElementById("coupon").style.display="block";}
+    function filterEvents(status) {
+        const list = document.getElementById('events-list');
+        const filtered = events.filter(e => e.status === status);
+        
+        // Actualizar botones UI
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if(btn.innerText.toLowerCase().includes(status === 'next' ? 'próx' : status === 'now' ? 'proc' : 'pas')) {
+                btn.classList.add('active');
+            }
+        });
 
-/* CHATBOT IA*/
-let chatOpen=true;
-function toggleChat(){document.getElementById('chat-messages').parentElement.style.height=chatOpen? '40px':'400px'; chatOpen=!chatOpen;}
-function sendChat(){
-  let input=document.getElementById('chatText');
-  if(input.value.trim()==='') return;
-  let messages=document.getElementById('chat-messages');
-  messages.innerHTML+=`<div><b>Tú:</b> ${input.value}</div>`;
-  // Respuesta simulada IA
-  messages.innerHTML+=`<div><b>OAB IA:</b> Hola! Gracias por tu mensaje: "${input.value}". Te responderemos pronto.</div>`;
-  messages.scrollTop=messages.scrollHeight;
-  input.value='';
-}
+        list.innerHTML = filtered.map(e => `
+            <div style="padding:25px; border:1px solid #eee; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <small style="color:var(--gold); font-weight:700;">${e.date}</small>
+                    <h4 style="font-family:'Playfair Display'; font-size:1.2rem;">${e.title}</h4>
+                    <p style="font-size:0.8rem; opacity:0.6;">${e.desc}</p>
+                </div>
+                <button class="filter-btn" style="padding:5px 15px;">Ver detalles</button>
+            </div>
+        `).join('');
+    }
+
+    // PORTAL LOGIC
+    function setRole(role) {
+        document.getElementById('tab-buyer').classList.toggle('active', role === 'comprador');
+        document.getElementById('tab-seller').classList.toggle('active', role === 'emprendedor');
+    }
+
+    // CHATBOT
+    function toggleJani() {
+        const chat = document.getElementById('jani-chat');
+        chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    // Init
+    window.onload = () => {
+        filterEvents('next');
+    }
 </script>
 
 </body>
