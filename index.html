@@ -3,320 +3,449 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OAB | Where Mixture Becomes Culture</title>
+    <title>OAB | Of All Bloods — Plataforma Cultural & LegalTech</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
         :root {
-            --gold: #b39659;
-            --black: #000000;
-            --white: #ffffff;
-            --gray: #f8f8f8;
+            --stone: #f4f4f2;
+            --stone-dark: #e5e5e0;
+            --black: #0a0a0a;
+            --gold: #9d844f;
+            --gold-light: #fdfbf7;
+            --text-muted: #767670;
+            --success: #4a6b52;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'DM Sans', sans-serif;
             --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--black); overflow-x: hidden; scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body { font-family: var(--font-sans); background: var(--stone); color: var(--black); overflow-x: hidden; }
 
-        /* --- NAVIGATION --- */
+        /* --- MANIFESTO BAR --- */
+        .manifesto-bar {
+            background: var(--black); color: var(--stone);
+            padding: 12px 5%; font-size: 11px; text-align: center;
+            letter-spacing: 2px; text-transform: uppercase; font-weight: 300;
+        }
+
+        /* --- PROFESSIONAL HEADER --- */
         header {
-            position: fixed; top: 0; width: 100%; height: 80px;
-            background: rgba(255,255,255,0.98); backdrop-filter: blur(10px);
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 5%; z-index: 1000; border-bottom: 1px solid #eee;
+            height: 90px; display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; background: rgba(244, 244, 242, 0.95); position: sticky; top: 0; z-index: 1000;
+            border-bottom: 1px solid var(--stone-dark); backdrop-filter: blur(10px);
         }
-        .logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; }
-        nav ul { display: flex; gap: 30px; list-style: none; }
-        nav a { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; color: var(--black); font-weight: 600; }
-        .nav-tools { display: flex; gap: 20px; align-items: center; }
-        .cart-icon { position: relative; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
-        .cart-icon:hover { color: var(--gold); }
-        .cart-count { position: absolute; top: -8px; right: -10px; background: var(--gold); color: white; font-size: 0.6rem; padding: 2px 6px; border-radius: 50%; font-weight: bold; }
+        .logo { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 700; letter-spacing: 4px; cursor: pointer; }
+        nav { display: flex; gap: 35px; align-items: center; }
+        nav a { text-decoration: none; color: var(--black); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; transition: var(--transition); cursor: pointer; }
+        nav a:hover, nav a.active { color: var(--gold); }
+        
+        .header-actions { display: flex; align-items: center; gap: 25px; }
+        .action-icon { font-size: 1.2rem; color: var(--black); cursor: pointer; transition: var(--transition); position: relative; }
+        .action-icon:hover { color: var(--gold); }
+        .cart-count { position: absolute; top: -7px; right: -10px; background: var(--gold); color: white; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 50%; }
 
-        /* --- HERO & COVER --- */
-        .hero { height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; color: white; text-align: center; }
-        .hero-img {
-            position: absolute; inset: 0;
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('portada.jpg');
-            background-size: cover; background-position: center;
-            animation: heroZoom 20s infinite alternate ease-in-out; z-index: -1;
-        }
-        @keyframes heroZoom { from { transform: scale(1); } to { transform: scale(1.15); } }
-        .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-style: italic; font-weight: 400; }
+        /* --- SEARCH & WALLET MODALS --- */
+        .search-overlay, .wallet-overlay { position: fixed; inset: 0; background: rgba(10,10,10,0.4); backdrop-filter: blur(8px); z-index: 2000; display: none; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 40px; border-radius: 16px; width: 90%; max-width: 500px; border: 1px solid var(--stone-dark); animation: fadeIn 0.4s ease; }
+        .search-input { width: 100%; padding: 15px; border: 1px solid var(--stone-dark); border-radius: 8px; font-family: var(--font-sans); font-size: 16px; margin-top: 15px; }
 
-        /* --- METRICS --- */
-        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); background: var(--black); color: var(--white); padding: 80px 5%; text-align: center; }
-        .metric h2 { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--gold); }
-        .metric p { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; opacity: 0.8; }
+        /* --- VIEW MANAGEMENT --- */
+        .app-view { display: none; }
+        .app-view.active { display: block; }
 
-        /* --- MARKETPLACE (B&W TO COLOR) --- */
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 40px; padding: 0 5%; }
-        .product-card { cursor: pointer; }
-        .img-container { position: relative; overflow: hidden; height: 480px; background: #f0f0f0; }
-        .product-card img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: var(--transition); }
-        .product-card:hover img { filter: grayscale(0%); transform: scale(1.05); }
-        .product-info { padding: 20px 0; }
-        .product-info h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 5px; }
-        .product-info p { color: var(--gold); font-weight: 600; }
+        /* --- HERO --- */
+        .hero { height: 65vh; position: relative; overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center; }
+        .hero-layer { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 2.5s ease-in-out; filter: brightness(0.5); }
+        .hero-layer.active { opacity: 0.5; }
+        .hero-content { position: relative; z-index: 10; text-align: center; color: white; max-width: 800px; padding: 0 20px; }
+        .hero-content h1 { font-family: var(--font-serif); font-size: clamp(2rem, 5vw, 4rem); line-height: 1.2; margin-bottom: 20px; }
+        .hero-content p { font-size: 14px; opacity: 0.8; margin-bottom: 30px; font-weight: 300; }
 
-        /* --- TESTIMONIALS SLIDER --- */
-        .testimonials-section { padding: 100px 0; background: var(--gray); overflow: hidden; }
-        .testimonial-slider { display: flex; overflow-x: auto; gap: 30px; padding: 20px 5%; scroll-snap-type: x mandatory; scrollbar-width: none; }
-        .testimonial-slider::-webkit-scrollbar { display: none; }
-        .testimonial-card { min-width: 350px; background: white; padding: 40px; scroll-snap-align: center; border: 1px solid #eee; }
-        .stars { color: var(--gold); margin-bottom: 15px; }
+        /* --- MASONRY FEED --- */
+        .section-padding { padding: 80px 5%; }
+        .filter-bar { display: flex; gap: 15px; margin-bottom: 40px; border-bottom: 1px solid var(--stone-dark); padding-bottom: 15px; overflow-x: auto; }
+        .filter-btn { background: transparent; border: none; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; opacity: 0.4; transition: var(--transition); }
+        .filter-btn.active, .filter-btn:hover { opacity: 1; color: var(--gold); }
+        
+        .masonry-feed { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 35px; }
+        .feed-item { background: white; border: 1px solid var(--stone-dark); transition: var(--transition); }
+        .feed-item:hover { transform: translateY(-5px); }
+        .feed-media { aspect-ratio: 1/1.2; overflow: hidden; background: var(--stone); position: relative; }
+        .feed-media img { width: 100%; height: 100%; object-fit: cover; }
+        .feed-content { padding: 25px; }
+        .feed-content h3 { font-family: var(--font-serif); font-size: 1.3rem; margin: 8px 0; }
 
-        /* --- JANI CHATBOT MODAL --- */
-        #jani-chat {
-            position: fixed; bottom: 100px; left: 30px; width: 320px; height: 450px;
-            background: white; border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.15);
-            display: none; flex-direction: column; z-index: 1500; overflow: hidden; border: 1px solid #eee;
-        }
-        .chat-header { background: var(--black); color: white; padding: 15px 20px; display: flex; align-items: center; gap: 10px; }
-        #chat-messages { flex: 1; padding: 20px; overflow-y: auto; font-size: 0.85rem; display: flex; flex-direction: column; gap: 10px; }
-        .msg { padding: 10px 15px; border-radius: 15px; max-width: 85%; line-height: 1.4; }
-        .msg.jani { background: var(--gray); align-self: flex-start; border-bottom-left-radius: 2px; }
-        .msg.user { background: var(--black); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
-        .chat-input { padding: 15px; border-top: 1px solid #eee; display: flex; }
-        .chat-input input { flex: 1; border: none; outline: none; font-size: 0.85rem; }
-        .chat-input button { background: none; border: none; color: var(--gold); font-weight: bold; cursor: pointer; }
+        /* --- MAP: SNAPMAP STYLE --- */
+        .map-wrapper { width: 100%; height: 600px; background: #e0ded4; position: relative; border: 1px solid var(--stone-dark); overflow: hidden; }
+        .mock-map-bg { width: 100%; height: 100%; object-fit: cover; filter: sepia(0.15); opacity: 0.8; }
+        .map-pin { position: absolute; cursor: pointer; background: var(--black); width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; color: white; transition: var(--transition); }
+        .map-pin:hover { transform: scale(1.2); background: var(--gold); }
+        .map-card { position: absolute; bottom: 30px; left: 30px; right: 30px; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); display: none; max-width: 400px; z-index: 100; border: 1px solid var(--stone-dark); }
 
-        /* --- CART MODAL --- */
-        #cart-modal {
-            position: fixed; right: -450px; top: 0; width: 450px; height: 100%;
-            background: white; z-index: 2000; box-shadow: -10px 0 50px rgba(0,0,0,0.1);
-            padding: 40px; transition: var(--transition); display: flex; flex-direction: column;
-        }
-        #cart-modal.open { right: 0; }
+        /* --- LUDIC LEARN HUB (GAMIFIED) --- */
+        .score-board { background: var(--black); color: white; padding: 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .score-title { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+        .score-value { font-size: 1.6rem; font-weight: 700; font-family: var(--font-serif); }
+        
+        .quiz-container { background: white; border: 1px solid var(--stone-dark); padding: 40px; border-radius: 16px; margin-top: 30px; display: none; }
+        .quiz-opt { width: 100%; padding: 15px; border: 1px solid var(--stone-dark); border-radius: 8px; text-align: left; background: var(--stone); margin-top: 12px; cursor: pointer; font-size: 14px; transition: var(--transition); }
+        .quiz-opt:hover { background: var(--gold-light); border-color: var(--gold); }
 
-        /* --- PORTAL TABS --- */
-        .role-selector { display: flex; border: 1px solid #ddd; margin-bottom: 30px; }
-        .role-tab { flex: 1; padding: 12px; text-align: center; cursor: pointer; font-size: 0.75rem; font-weight: 600; }
-        .role-tab.active { background: var(--black); color: white; }
+        /* --- JANI PROFESSIONAL VOICE AGENT --- */
+        #jani-container { position: fixed; bottom: 35px; left: 35px; z-index: 5000; }
+        .jani-toggle { width: 65px; height: 65px; background: var(--black); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; border: 2px solid var(--gold); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+        .jani-window { position: absolute; bottom: 85px; left: 0; width: 400px; height: 550px; background: white; border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.1); display: none; flex-direction: column; overflow: hidden; border: 1px solid var(--stone-dark); }
+        .jani-chat-header { background: var(--black); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .voice-status { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); display: flex; align-items: center; gap: 5px; }
+        .jani-history { flex: 1; padding: 25px; overflow-y: auto; background: var(--gold-light); display: flex; flex-direction: column; gap: 15px; }
+        
+        .bubble { padding: 14px 18px; border-radius: 14px; font-size: 13.5px; line-height: 1.5; max-width: 85%; }
+        .bubble.jani { background: white; border: 1px solid var(--stone-dark); align-self: flex-start; border-bottom-left-radius: 2px; }
+        .bubble.user { background: var(--black); color: var(--stone); align-self: flex-end; border-bottom-right-radius: 2px; }
+        .jani-diagram { font-family: monospace; background: var(--black); color: #a4c6a7; padding: 12px; border-radius: 6px; font-size: 11px; margin: 10px 0; white-space: pre; overflow-x: auto; }
+        .jani-refs { font-size: 10px; color: var(--text-muted); border-top: 1px solid var(--stone-dark); padding-top: 8px; margin-top: 8px; }
 
-        /* --- BUTTONS & FOOTER --- */
-        .btn-black { background: var(--black); color: white; padding: 15px; border: none; width: 100%; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem; }
-        footer { background: var(--black); color: white; padding: 80px 5%; text-align: center; }
-        .slogan { letter-spacing: 5px; text-transform: uppercase; font-size: 0.7rem; opacity: 0.6; margin-top: 10px; }
+        .jani-control-panel { padding: 20px; background: white; border-top: 1px solid var(--stone-dark); display: flex; flex-direction: column; gap: 10px; }
+        .panel-btn { width: 100%; padding: 12px; background: transparent; border: 1px solid var(--black); text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border-radius: 6px; transition: var(--transition); }
+        .panel-btn:hover { background: var(--black); color: white; }
+
+        /* --- GLOBAL FOOTER --- */
+        footer { background: var(--black); color: var(--stone); padding: 60px 5% 40px; font-size: 13px; border-top: 3px solid var(--gold); }
+        .footer-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; }
+        .footer-cols h4 { color: var(--gold); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 15px; }
+        .footer-cols ul { list-style: none; }
+        .footer-cols ul li { margin-bottom: 8px; }
+        .footer-cols ul li a { color: var(--stone); text-decoration: none; opacity: 0.6; transition: 0.3s; }
+        .footer-cols ul li a:hover { opacity: 1; color: var(--gold); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
 
+<div class="manifesto-bar">Donde la creatividad se ve, se protege y se conecta — Ecosistema Sostenible OAB 2026</div>
+
 <header>
-    <div class="logo">OAB.</div>
+    <div class="logo" onclick="navigateTo('view-discover')">OAB.</div>
     <nav>
-        <ul>
-            <li><a href="#marketplace">Marketplace</a></li>
-            <li><a href="#encuentros">Encuentros</a></li>
-            <li><a href="#portal">Portal</a></li>
-            <li><a href="#contacto">Contacto</a></li>
-        </ul>
+        <a id="nav-discover" class="active" onclick="navigateTo('view-discover')">Descubre</a>
+        <a id="nav-map" onclick="navigateTo('view-map')">Mapa</a>
+        <a id="nav-learn" onclick="navigateTo('view-learn')">Aprende</a>
     </nav>
-    <div class="nav-tools">
-        <div class="cart-icon" onclick="toggleCart()">
-            <i class="fa-solid fa-bag-shopping"></i>
-            <span class="cart-count" id="cart-count">0</span>
-        </div>
-        <a href="#portal"><i class="fa-regular fa-user"></i></a>
+    <div class="header-actions">
+        <i class="fa-solid fa-magnifying-glass action-icon" onclick="toggleModal('search-modal')"></i>
+        <i class="fa-solid fa-bag-shopping action-icon" onclick="toggleModal('wallet-modal')">
+            <span class="cart-count" id="cart-counter">0</span>
+        </i>
+        <button class="btn-portal" onclick="alert('Acceso al portal seguro de autor OAB.')">Portal</button>
     </div>
 </header>
 
-<section class="hero">
-    <div class="hero-img"></div>
-    <div class="hero-content">
-        <h1>Of All Bloods</h1>
-        <p style="letter-spacing: 5px; text-transform: uppercase; font-size: 0.8rem;">where mixture becomes culture</p>
-    </div>
-</section>
-
-<section class="metrics">
-    <div class="metric"><h2 id="m1">0</h2><p>Artesanos Aliados</p></div>
-    <div class="metric"><h2 id="m2">0</h2><p>Piezas Curadas</p></div>
-    <div class="metric"><h2 id="m3">0</h2><p>Talleres Éticos</p></div>
-    <div class="metric"><h2 id="m4">0</h2><p>Destinos Globales</p></div>
-</section>
-
-<section id="marketplace" style="padding: 100px 0;">
-    <h2 style="text-align:center; font-family:'Playfair Display'; font-size: 2.5rem; margin-bottom: 50px;">Curaduría de Archivo</h2>
-    <div class="product-grid">
-        <div class="product-card" onclick="addToCart('Poncho Alpaca Suri', 950)">
-            <div class="img-container"><img src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=800"></div>
-            <div class="product-info"><h3>Poncho Alpaca Suri</h3><p>S/ 950.00</p></div>
-        </div>
-        <div class="product-card" onclick="addToCart('Cartera Cuero Minimal', 480)">
-            <div class="img-container"><img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=800"></div>
-            <div class="product-info"><h3>Cartera Cuero Minimal</h3><p>S/ 480.00</p></div>
-        </div>
-        <div class="product-card" onclick="addToCart('Manta Textil Puno', 620)">
-            <div class="img-container"><img src="https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?q=80&w=800"></div>
-            <div class="product-info"><h3>Manta Textil Puno</h3><p>S/ 620.00</p></div>
-        </div>
-    </div>
-</section>
-
-<section id="encuentros" style="padding: 100px 10%; border-top: 1px solid #eee;">
-    <h2 style="text-align:center; font-family:'Playfair Display'; margin-bottom:40px;">Encuentros OAB</h2>
-    <div style="display:flex; justify-content:center; gap:20px; margin-bottom:40px;">
-        <button class="role-tab active" id="f-next" onclick="filterEvents('next')">Próximos</button>
-        <button class="role-tab" id="f-past" onclick="filterEvents('past')">Pasados</button>
-    </div>
-    <div id="events-container" style="display: grid; gap: 20px;"></div>
-</section>
-
-<section class="testimonials-section">
-    <h2 style="text-align:center; font-family:'Playfair Display'; margin-bottom:40px;">Voces de la Comunidad</h2>
-    <div class="testimonial-slider">
-        <div class="testimonial-card"><div class="stars">★★★★★</div><p>"La calidad es impresionante, se siente la historia en cada fibra."</p><strong>— Elena M.</strong></div>
-        <div class="testimonial-card"><div class="stars">★★★★★</div><p>"Como artesano, OAB me permite llegar a mercados que no imaginaba."</p><strong>— Pedro S.</strong></div>
-        <div class="testimonial-card"><div class="stars">★★★★★</div><p>"Jani me ayudó con mi pedido, la atención es de primera clase."</p><strong>— Julian R.</strong></div>
-    </div>
-</section>
-
-<section id="portal" style="padding: 100px 10%; background: white;">
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:80px; align-items: center;">
-        <div>
-            <h2 style="font-family:'Playfair Display'; font-size: 3rem; margin-bottom:20px;">Portal OAB</h2>
-            <p>Accede a tu cuenta segura. Como emprendedor podrás publicar tus obras; como comprador, rastrear tu herencia.</p>
-        </div>
-        <div style="background: white; padding: 40px; border: 1px solid #eee;">
-            <div class="role-selector">
-                <div class="role-tab active" id="t-buy" onclick="setPortal('buy')">Comprador</div>
-                <div class="role-tab" id="t-sell" onclick="setPortal('sell')">Emprendedor</div>
-            </div>
-            <input type="email" placeholder="Email" style="width:100%; padding:15px; margin-bottom:15px; border:1px solid #ddd;">
-            <input type="password" placeholder="Contraseña segura" style="width:100%; padding:15px; margin-bottom:20px; border:1px solid #ddd;">
-            <button class="btn-black">Entrar al Ecosistema</button>
-        </div>
-    </div>
-</section>
-
-<section id="contacto" style="padding: 100px 10%; border-top: 1px solid #eee;">
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:60px;">
-        <div>
-            <h2 style="font-family:'Playfair Display'; margin-bottom:20px;">Contacto</h2>
-            <p>Escríbenos para consultas personalizadas: <br><a href="mailto:consultas@oab.global" style="color:var(--gold); font-weight:bold;">consultas@oab.global</a></p>
-            <div style="margin-top:30px; display:flex; gap:20px; font-size: 1.5rem;">
-                <i class="fa-brands fa-instagram"></i><i class="fa-brands fa-whatsapp"></i><i class="fa-brands fa-linkedin"></i>
-            </div>
-        </div>
-        <form><textarea placeholder="Tu mensaje..." style="width:100%; height:120px; padding:15px; border:1px solid #ddd;"></textarea><button class="btn-black" style="margin-top:10px;">Enviar</button></form>
-    </div>
-</section>
-
-<div id="jani-trigger" onclick="toggleChat()" style="position:fixed; bottom:30px; left:30px; width:65px; height:65px; background:black; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:1600; font-size:1.5rem;">
-    <i class="fa-solid fa-dove"></i>
-</div>
-
-<div id="jani-chat">
-    <div class="chat-header"><i class="fa-solid fa-dove"></i> <span>Jani - Guía Cultural</span></div>
-    <div id="chat-messages">
-        <div class="msg jani">¡Coo-coo! Soy Jani. ¿En qué puedo ayudarte hoy en el ecosistema OAB?</div>
-    </div>
-    <div class="chat-input">
-        <input type="text" id="janiInput" placeholder="Escribe un mensaje..." onkeypress="if(event.key==='Enter') sendJani()">
-        <button onclick="sendJani()">Enviar</button>
+<div class="search-overlay" id="search-modal" onclick="closeModalOutside(event, 'search-modal')">
+    <div class="modal-content">
+        <h3>Buscador Avanzado OAB</h3>
+        <p style="font-size:12px; color:var(--text-muted);">Encuentra colecciones por trazabilidad, región o autor.</p>
+        <input type="text" class="search-input" placeholder="Ej. Alpaca Suri, Puno, Indecopi..." onkeypress="handleSearch(event)">
     </div>
 </div>
 
-<div id="cart-modal">
-    <h2 style="font-family:'Playfair Display'; margin-bottom:30px;">Tu Canasta</h2>
-    <div id="cart-list" style="flex:1; overflow-y:auto;"></div>
-    <div style="border-top: 2px solid black; padding-top: 20px;">
-        <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem;"><span>TOTAL:</span><span id="cart-total">S/ 0.00</span></div>
-        <p style="font-size:0.7rem; margin: 15px 0; opacity:0.6;">Pago seguro vía Yape, Plin o Transferencia Bancaria.</p>
-        <button class="btn-black" onclick="alert('Redirigiendo a pasarela de pago...')">Finalizar Compra</button>
-        <button onclick="toggleCart()" style="width:100%; background:none; border:none; margin-top:10px; cursor:pointer; font-size:0.7rem;">CERRAR</button>
+<div class="wallet-overlay" id="wallet-modal" onclick="closeModalOutside(event, 'wallet-modal')">
+    <div class="modal-content">
+        <h3 style="font-family:var(--font-serif); font-size:1.6rem; margin-bottom:15px;">Tu Cartera de Impacto</h3>
+        <div id="wallet-items" style="font-size:13px; margin-bottom:20px; color:#555;">Tu cartera de compras y preventas culturales está vacía.</div>
+        <button class="panel-btn" style="text-align:center;" onclick="toggleModal('wallet-modal')">Continuar Explorando</button>
     </div>
+</div>
+
+<main id="view-discover" class="app-view active">
+    <section class="hero">
+        <div class="hero-layer active" style="background-image: url('https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?q=80&w=2000');"></div>
+        <div class="hero-layer" style="background-image: url('https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=2000');"></div>
+        <div class="hero-content">
+            <h2>Ecosistema de Moda con Propósito</h2>
+            <h1>Lo que haces lleva historia, cuéntala con nosotros</h1>
+            <p>Transformamos el talento creativo independiente de Latinoamérica en marcas protegidas, sostenibles y conectadas globalmente.</p>
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <div class="filter-bar">
+            <button class="filter-btn active">Todo</button>
+            <button class="filter-btn">Productos</button>
+            <button class="filter-btn">Historias</button>
+        </div>
+
+        <div class="masonry-feed">
+            <div class="feed-item">
+                <div class="feed-media"><img src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=800"></div>
+                <div class="feed-content">
+                    <span style="color:var(--gold); font-size:10px; font-weight:700; letter-spacing:1px;">PUNO / TEXTILES</span>
+                    <h3>Poncho Suri Minimalista</h3>
+                    <p>Fibra orgánica premium de comercio justo.</p>
+                    <button class="panel-btn" style="margin-top:15px;" onclick="addToCart('Poncho Suri Minimalista')">Añadir a Cartera</button>
+                </div>
+            </div>
+            <div class="feed-item">
+                <div class="feed-media"><img src="https://images.unsplash.com/photo-1590483734731-5079a49590e8?q=80&w=800"></div>
+                <div class="feed-content">
+                    <span style="color:var(--gold); font-size:10px; font-weight:700; letter-spacing:1px;">CATACAOS / JOYERÍA</span>
+                    <h3>Filigrana Luna Ancestral</h3>
+                    <p>Plata de ley con trazabilidad e historia verificada.</p>
+                    <button class="panel-btn" style="margin-top:15px;" onclick="addToCart('Filigrana Luna Ancestral')">Añadir a Cartera</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<main id="view-map" class="app-view">
+    <section class="section-padding">
+        <div style="margin-bottom:30px;">
+            <span style="color:var(--gold); font-weight:700; font-size:11px; letter-spacing:1.5px; text-transform:uppercase;">Georreferenciación Cultural</span>
+            <h2 style="font-family: var(--font-serif); font-size:2.2rem; margin-top:5px;">SnapMap de Ateliers Colectivos</h2>
+        </div>
+
+        <div class="map-wrapper">
+            <img class="mock-map-bg" src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1500">
+            <div class="map-pin" style="top: 25%; left: 35%;" onclick="showMapCard('Taller Textil Cojata', 'Puno - Especialistas en fibra fina de alpaca orgánica de alta montaña.')">
+                <i class="fa-solid fa-location-dot"></i>
+            </div>
+            <div class="map-pin" style="top: 60%; left: 55%;" onclick="showMapCard('Maestros de la Filigrana', 'Piura - Orfebrería tradicional con trazabilidad patrimonial certificada.')">
+                <i class="fa-solid fa-location-dot"></i>
+            </div>
+
+            <div class="map-card" id="map-info-card">
+                <h4 id="map-card-title" style="font-family:var(--font-serif); font-size:1.4rem; margin-bottom:8px;">Taller</h4>
+                <p id="map-card-desc" style="font-size:13px; color:#555; line-height:1.5; margin-bottom:15px;">Descripción.</p>
+                <div style="display:flex; gap:10px;">
+                    <button class="panel-btn" style="padding:8px 12px;" onclick="navigateTo('view-discover')">Ver Colección</button>
+                    <button class="panel-btn" style="padding:8px 12px; border-color:#ccc;" onclick="document.getElementById('map-info-card').style.display='none'">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<main id="view-learn" class="app-view">
+    <section class="section-padding" style="max-width:900px; margin:0 auto;">
+        <div class="score-board">
+            <div>
+                <p class="score-title">Nivel de Marca Sostenible</p>
+                <p style="font-size:14px; opacity:0.8; font-weight:300;">Ruta: "De Talento a Marca"</p>
+            </div>
+            <div style="text-align:right;">
+                <p class="score-title">Puntos de Impacto</p>
+                <p class="score-value" id="user-points">0 PTS</p>
+            </div>
+        </div>
+
+        <div style="text-align:center; margin-bottom:50px;">
+            <h2 style="font-family:var(--font-serif); font-size:2.5rem;">Aprende Jugando e Impulsa tu Negocio</h2>
+            <p style="font-size:14px; color:#666; margin-top:8px;">Completa los desafíos educativos interactivos para desbloquear beneficios de financiamiento y sellos ODS.</p>
+            <button class="btn-portal" style="margin-top:20px; background:var(--black); color:white;" onclick="startInteractiveQuiz()">Iniciar Desafío del Día</button>
+        </div>
+
+        <div class="quiz-container" id="oab-quiz-box">
+            <h3 id="quiz-question" style="font-family:var(--font-serif); font-size:1.4rem; margin-bottom:15px;">Pregunta</h3>
+            <div id="quiz-options-wrapper"></div>
+            <p id="quiz-feedback" style="margin-top:20px; font-weight:700; font-size:14px; display:none;"></p>
+        </div>
+    </section>
+</main>
+
+<div id="jani-container">
+    <div class="jani-window" id="jani-box">
+        <div class="jani-chat-header">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <div style="width:35px; height:35px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white;"><i class="fa-solid fa-dove"></i></div>
+                <div>
+                    <p style="font-weight:700; font-size:13px;">JANI</p>
+                    <p style="font-size:9px; opacity:0.7;">Mentor Asistido por Voz</p>
+                </div>
+            </div>
+            <div class="voice-status" id="voice-indicator"><i class="fa-solid fa-volume-high"></i> Voz Activa</div>
+        </div>
+
+        <div class="jani-history" id="jani-history-panel">
+            <div class="bubble jani">¡Coo-coo! Soy Jani. He optimizado mi sistema para guiarte con voz y datos rigurosos en el marco legal y de mercado. ¿Qué ruta estratégica trazamos hoy?</div>
+        </div>
+
+        <div class="jani-control-panel">
+            <button class="panel-btn" onclick="executeJaniBrain('legal')">➔ Proceso de Blindaje Legal (Indecopi)</button>
+            <button class="panel-btn" onclick="executeJaniBrain('ods')">➔ Validar Impacto Sostenible (ODS 9 y 12)</button>
+        </div>
+    </div>
+    <div class="jani-toggle" onclick="toggleJaniWindow()"><i class="fa-solid fa-dove" style="font-size:1.3rem;"></i></div>
 </div>
 
 <footer>
-    <div class="logo">OAB.</div>
-    <p class="slogan">where mixture becomes culture</p>
-    <div style="margin-top:40px; font-size:0.7rem; opacity:0.4; display:flex; justify-content:center; gap:30px;">
-        <span>&copy; 2026 OF ALL BLOODS</span>
-        <a href="#" style="color:white; text-decoration:none;">Términos y Condiciones</a>
+    <div class="footer-cols">
+        <div>
+            <h3 style="font-family:var(--font-serif); font-size:1.8rem; color:var(--gold); margin-bottom:10px;">OAB.</h3>
+            <p style="opacity:0.6; font-size:13px; line-height:1.6;">Donde la creatividad se ve, se protege y se conecta con el mercado consciente global.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Navegación</h4>
+            <ul>
+                <li><a onclick="navigateTo('view-discover')">Descubre</a></li>
+                <li><a onclick="navigateTo('view-map')">Mapa de Ateliers</a></li>
+                <li><a onclick="navigateTo('view-learn')">Learn Hub Lúdico</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Políticas ONU</h4>
+            <ul>
+                <li><span style="color:var(--gold); font-weight:700;">ODS 9:</span> Industria e Innovación</li>
+                <li><span style="color:var(--gold); font-weight:700;">ODS 12:</span> Consumo Responsable</li>
+            </ul>
+        </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:20px; text-align:center; font-size:11px; opacity:0.5;">
+        © 2026 OAB – Of All Bloods. Despliegue Profesional de Arquitectura Web.
     </div>
 </footer>
 
 <script>
-    // --- METRICS ANIMATION ---
-    function animateM(id, end) {
-        let obj = document.getElementById(id), cur = 0, step = Math.ceil(end/100);
-        let timer = setInterval(() => {
-            cur += step; if(cur >= end) { cur = end; clearInterval(timer); }
-            obj.textContent = cur;
-        }, 30);
-    }
-
-    // --- CART LOGIC ---
-    let cart = [];
-    function addToCart(n, p) {
-        cart.push({n, p}); updateCart();
-        if(!document.getElementById('cart-modal').classList.contains('open')) toggleCart();
-    }
-    function updateCart() {
-        document.getElementById('cart-list').innerHTML = cart.map((i,idx) => `
-            <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-size:0.9rem;">
-                <span>${i.n}</span><strong>S/ ${i.p.toFixed(2)}</strong>
-            </div>`).join('');
-        document.getElementById('cart-count').innerText = cart.length;
-        document.getElementById('cart-total').innerText = `S/ ${cart.reduce((a,b)=>a+b.p,0).toFixed(2)}`;
-    }
-    function toggleCart() { document.getElementById('cart-modal').classList.toggle('open'); }
-
-    // --- JANI CHATBOT LOGIC (100% Functional) ---
-    function toggleChat() { 
-        const c = document.getElementById('jani-chat');
-        c.style.display = (c.style.display === 'flex') ? 'none' : 'flex';
-    }
-
-    function sendJani() {
-        const input = document.getElementById('janiInput'), box = document.getElementById('chat-messages');
-        if(!input.value.trim()) return;
+    // --- APP ROUTING MANAGEMENT (SPA) ---
+    function navigateTo(viewId) {
+        document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
+        document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
         
-        box.innerHTML += `<div class="msg user">${input.value}</div>`;
-        const val = input.value.toLowerCase();
-        input.value = ''; box.scrollTop = box.scrollHeight;
-
-        setTimeout(() => {
-            let res = "¡Coo-coo! Mi vuelo no ha encontrado información exacta sobre eso, pero puedo ayudarte con pagos, envíos o cómo registrarte como artesano.";
-            if(val.includes("yape") || val.includes("pago")) res = "Aceptamos Yape, Plin y transferencias bancarias directas para asegurar el pago justo al artesano.";
-            if(val.includes("vender") || val.includes("artesano")) res = "¡Qué alegría! En la sección 'Portal', elige 'Emprendedor' para registrar tu taller y empezar a mostrar tu arte.";
-            if(val.includes("evento")) res = "Tenemos encuentros culturales pronto. Mira la sección 'Encuentros' para agendarte.";
-            if(val.includes("hola")) res = "¡Hola! Soy Jani, tu paloma guía. ¿Quieres saber más sobre nuestras piezas de alpaca o los próximos eventos?";
-            
-            box.innerHTML += `<div class="msg jani">${res}</div>`;
-            box.scrollTop = box.scrollHeight;
-        }, 1000);
+        document.getElementById(viewId).classList.add('active');
+        if(viewId === 'view-discover') document.getElementById('nav-discover').classList.add('active');
+        if(viewId === 'view-map') document.getElementById('nav-map').classList.add('active');
+        if(viewId === 'view-learn') document.getElementById('nav-learn').classList.add('active');
+        window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    // --- EVENT FILTERS ---
-    const evs = [
-        {t: "Cumbre Textil Cusco", d: "Marzo 2026", s: "next"},
-        {t: "Gala OAB Lima", d: "Abril 2026", s: "next"},
-        {t: "Workshop Alpaca Madrid", d: "Diciembre 2025", s: "past"}
-    ];
-    function filterEvents(s) {
-        document.getElementById('f-next').classList.toggle('active', s==='next');
-        document.getElementById('f-past').classList.toggle('active', s==='past');
-        document.getElementById('events-container').innerHTML = evs.filter(e=>e.s===s).map(e=>`
-            <div style="padding:20px; border:1px solid #eee; display:flex; justify-content:space-between; align-items:center;">
-                <div><small style="color:var(--gold); font-weight:bold;">${e.d}</small><h4>${e.t}</h4></div>
-                <button style="background:black; color:white; padding:5px 15px; border:none; font-size:0.6rem; cursor:pointer;">INFO</button>
-            </div>`).join('');
+    // --- MODALS AND CART CONVERSIONS ---
+    let cart = [];
+    function toggleModal(id) {
+        const modal = document.getElementById(id);
+        modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+    }
+    function closeModalOutside(e, id) {
+        if(e.target === document.getElementById(id)) toggleModal(id);
+    }
+    function handleSearch(e) {
+        if(e.key === 'Enter') {
+            alert(`Buscando con éxito en el catálogo OAB: "${e.target.value}"`);
+            toggleModal('search-modal');
+        }
+    }
+    function addToCart(itemName) {
+        cart.push(itemName);
+        document.getElementById('cart-counter').innerText = cart.length;
+        document.getElementById('wallet-items').innerHTML = `<strong>Items listados para transacción:</strong><br>${cart.map(i => `• ${i}`).join('<br>')}`;
+        alert(`"${itemName}" añadido con éxito a tu Cartera de Impacto.`);
     }
 
-    // --- PORTAL ---
-    function setPortal(r) {
-        document.getElementById('t-buy').classList.toggle('active', r==='buy');
-        document.getElementById('t-sell').classList.toggle('active', r==='sell');
+    // --- SNAPMAP SYSTEM ---
+    function showMapCard(title, desc) {
+        document.getElementById('map-card-title').innerText = title;
+        document.getElementById('map-card-desc').innerText = desc;
+        document.getElementById('map-info-card').style.display = 'block';
     }
 
-    window.onload = () => {
-        animateM("m1", 85); animateM("m2", 240); animateM("m3", 12); animateM("m4", 15);
-        filterEvents('next');
+    // --- LUDIC & GAMIFIED LEARN HUB ---
+    let totalPoints = 0;
+    const quizData = {
+        question: "¿Cuál es el beneficio primordial de registrar colectivamente tu marca de diseño ante Indecopi con el Hub OAB?",
+        options: [
+            "Evitar que terceros plagien el patrimonio, asegurando que la herencia cultural mantenga valor y trazabilidad justa.",
+            "Solo cambiar la estética visual de la etiqueta del producto.",
+            "Incrementar artificialmente los costos de producción sin beneficio real."
+        ],
+        correct: 0
+    };
+
+    function startInteractiveQuiz() {
+        const box = document.getElementById('oab-quiz-box');
+        box.style.display = 'block';
+        document.getElementById('quiz-question').innerText = quizData.question;
+        const wrapper = document.getElementById('quiz-options-wrapper');
+        wrapper.innerHTML = "";
+        document.getElementById('quiz-feedback').style.display = 'none';
+
+        quizData.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'quiz-opt';
+            btn.innerText = opt;
+            btn.onclick = () => verifyQuizAnswer(idx, btn);
+            wrapper.appendChild(btn);
+        });
+        box.scrollIntoView({behavior: 'smooth'});
+    }
+
+    function verifyQuizAnswer(idx, element) {
+        const feedback = document.getElementById('quiz-feedback');
+        feedback.style.display = 'block';
+        if(idx === quizData.correct) {
+            feedback.innerText = "¡Correcto! +100 Puntos de Impacto. Has blindado tu conocimiento sobre protección de marca.";
+            feedback.style.color = 'var(--success)';
+            totalPoints += 100;
+            document.getElementById('user-points').innerText = `${totalPoints} PTS`;
+        } else {
+            feedback.innerText = "Respuesta incorrecta. Recuerda que la formalización protege tu historia frente al plagio de mercado.";
+            feedback.style.color = '#a94442';
+        }
+    }
+
+    // --- PROFESSIONAL JANI AGENT WITH VOICE SYSTEM ---
+    const janiBox = document.getElementById('jani-box');
+    const historyPanel = document.getElementById('jani-history-panel');
+
+    function toggleJaniWindow() { janiBox.style.display = (janiBox.style.display === 'flex') ? 'none' : 'flex'; }
+
+    function speakJaniText(text) {
+        if ('speechSynthesis' in window) {
+            // Limpiar etiquetas HTML sutiles para la lectura de voz limpia
+            const cleanText = text.replace(/<\/?[^>]+(>|$)/g, "");
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            utterance.lang = 'es-ES';
+            utterance.rate = 1.0;
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    function executeJaniBrain(context) {
+        if(context === 'legal') {
+            appendJaniBubble("Quiero conocer el protocolo de blindaje legal de Indecopi.", "user");
+            setTimeout(() => {
+                const legalReply = `
+                    <p>Entendido. El ecosistema OAB reduce el analfabetismo legal a través del siguiente flujo estructurado:</p>
+                    <div class="jani-diagram">[Idea Exclusiva] ➔ (Filtro Fonético OAB) ➔ [Registro Indecopi]</div>
+                    <p>Esto protege el diseño contra plagios masivos y asegura la cadena de valor.</p>
+                    <div class="jani-refs"><strong>[Referencias]:</strong> Ley de Propiedad Industrial de Perú, 2026. Alineación estratégica ODS 9 (Innovación de infraestructura local).</div>
+                `;
+                appendJaniBubble(legalReply, "jani");
+                speakJaniText("Entendido. El ecosistema OAB reduce el analfabetismo legal a través de un flujo estructurado de blindaje que protege el diseño contra plagios masivos.");
+            }, 800);
+        } else if(context === 'ods') {
+            appendJaniBubble("¿Cómo valida la plataforma mi producción bajo los ODS?", "user");
+            setTimeout(() => {
+                const odsReply = `
+                    <p>OAB audita la cadena de suministro textil bajo estándares internacionales transparentes:</p>
+                    <div class="jani-diagram">ODS 9 ➔ Infraestructura e Innovación Resiliente<br>ODS 12 ➔ Consumo y Producción Residuo Cero</div>
+                    <div class="jani-refs"><strong>[Referencias]:</strong> Agenda 2030 de las Naciones Unidas para el Desarrollo Sostenible.</div>
+                `;
+                appendJaniBubble(odsReply, "jani");
+                speakJaniText("OAB audita la cadena de suministro textil bajo estándares internacionales transparentes alineados a los objetivos de desarrollo sostenible 9 y 12 de las Naciones Unidas.");
+            }, 800);
+        }
+    }
+
+    function appendJaniBubble(htmlContent, sender) {
+        const b = document.createElement('div');
+        b.className = `bubble ${sender}`;
+        b.innerHTML = htmlContent;
+        historyPanel.appendChild(b);
+        historyPanel.scrollTop = historyPanel.scrollHeight;
     }
 </script>
 
